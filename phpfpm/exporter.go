@@ -166,67 +166,67 @@ func NewExporter(pm PoolManager) *Exporter {
 		StatMaxCachedKeys: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_max_cached_scripts"),
 			"stat_num_cached_scripts",
-			[]string{"pool", "pid_hash"},
+			[]string{"pool"},
 			nil),
 
 		StatHits: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_hits"),
 			"stat_hits",
-			[]string{"pool", "pid_hash"},
+			[]string{"pool"},
 			nil),
 
 		StatStartTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_start_time"),
 			"stat_start_time",
-			[]string{"pool", "pid_hash"},
+			[]string{"pool"},
 			nil),
 
 		StatLastRestartTime: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_last_restart_time"),
 			"stat_last_restart_time",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatOomRestarts: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_oom_restarts"),
 			"stat_oom_restarts",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatHashRestart: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_hash_restarts"),
 			"stat_hash_restarts",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatManualRestarts: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_manual_restarts"),
 			"stat_manual_restarts",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatMisses: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_misses"),
 			"stat_misses",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatBlacklistMisses: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_blacklist_misses"),
 			"stat_blacklist_misses",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatBlacklistMissRatio: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_blacklist_miss_ratio"),
 			"stat_blacklist_miss_ratio",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 
 		StatOpcacheHitRate: prometheus.NewDesc(
 			prometheus.BuildFQName(namespace, "", "stat_hit_rate"),
 			"stat_hit_rate",
-			[]string{"pool", "state"},
+			[]string{"pool"},
 			nil),
 	}
 }
