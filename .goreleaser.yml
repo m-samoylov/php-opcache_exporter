@@ -1,0 +1,24 @@
+builds:
+  - binary: php-opcache_exporter
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+
+dockers:
+  - image_templates:
+      - "m-samoylov/php-opcache_exporter:latest"
+      - "m-samoylov/php-opcache_exporter:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+      - "m-samoylov/php-opcache_exporter:{{ .Major }}.{{ .Minor }}"
+      - "m-samoylov/php-opcache_exporter:{{ .Major }}"
+    build_flag_templates:
+      - "--build-arg=VERSION={{.Version}}"
+      - "--build-arg=BUILD_DATE={{.Date}}"
+      - "--build-arg=VCS_REF={{.FullCommit}}"
+
+archive:
+  format: binary
