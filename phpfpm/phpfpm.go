@@ -89,6 +89,7 @@ type Pool struct {
 	MemoryUsage          MemoryUsage          `json:"memory_usage"`
 	InternedStringsUsage InternedStringsUsage `json:"interned_string_usage"`
 	OpcacheStatistics    OpcacheStatistics    `json:"opcache_statistics"`
+	Scripts              []string             `json:"scripts"`
 }
 
 type FPMPool struct {
@@ -190,6 +191,10 @@ func (p *Pool) Update() (err error) {
 	if err := tmpfile.Close(); err != nil {
 		return p.error(err)
 	}
+
+  if err := os.Chmod(tmpfile.Name(), 0644); err != nil {
+    return p.error(err)
+   }
 
 	env := map[string]string{
 		"SCRIPT_FILENAME": tmpfile.Name(),
