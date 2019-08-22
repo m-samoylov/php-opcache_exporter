@@ -60,19 +60,19 @@ type InternedStringsUsage struct {
 }
 
 type OpcacheStatistics struct {
-	NumCachedScripts   int `json:"num_cached_scripts"`
-	NumCachedKeys      int `json:"num_cached_keys"`
-	MaxCachedKeys      int `json:"max_cached_keys"`
-	Hits               int `json:"hits"`
-	StartTime          int `json:"start_time"`
-	LastRestartTime    int `json:"last_restart_time"`
-	OomRestarts        int `json:"oom_restarts"`
-	HashRestart        int `json:"hash_restarts"`
-	ManualRestarts     int `json:"manual_restarts"`
-	Misses             int `json:"misses"`
-	BlacklistMisses    int `json:"blacklist_misses"`
-	BlacklistMissRatio int `json:"blacklist_miss_ratio"`
-	OpcacheHitRate     int `json:"opcache_hit_rate"`
+	NumCachedScripts   int     `json:"num_cached_scripts"`
+	NumCachedKeys      int     `json:"num_cached_keys"`
+	MaxCachedKeys      int     `json:"max_cached_keys"`
+	Hits               int     `json:"hits"`
+	StartTime          int     `json:"start_time"`
+	LastRestartTime    int     `json:"last_restart_time"`
+	OomRestarts        int     `json:"oom_restarts"`
+	HashRestart        int     `json:"hash_restarts"`
+	ManualRestarts     int     `json:"manual_restarts"`
+	Misses             int     `json:"misses"`
+	BlacklistMisses    int     `json:"blacklist_misses"`
+	BlacklistMissRatio float64 `json:"blacklist_miss_ratio"`
+	OpcacheHitRate     float64 `json:"opcache_hit_rate"`
 }
 
 // Pool describes a single PHP-FPM pool that can be reached via a Socket or TCP address
@@ -89,7 +89,7 @@ type Pool struct {
 	MemoryUsage          MemoryUsage          `json:"memory_usage"`
 	InternedStringsUsage InternedStringsUsage `json:"interned_string_usage"`
 	OpcacheStatistics    OpcacheStatistics    `json:"opcache_statistics"`
-	Scripts              []string             `json:"scripts"`
+	Scripts              json.RawMessage
 }
 
 type FPMPool struct {
@@ -192,9 +192,9 @@ func (p *Pool) Update() (err error) {
 		return p.error(err)
 	}
 
-  if err := os.Chmod(tmpfile.Name(), 0644); err != nil {
-    return p.error(err)
-   }
+	if err := os.Chmod(tmpfile.Name(), 0644); err != nil {
+		return p.error(err)
+	}
 
 	env := map[string]string{
 		"SCRIPT_FILENAME": tmpfile.Name(),
@@ -218,9 +218,11 @@ func (p *Pool) Update() (err error) {
 	log.Debugf("Pool[%v]: %v", p.Address, string(content))
 
 	if err = json.Unmarshal(content, &p); err != nil {
-		log.Errorf("Pool[%v]: %v", p.Address, string(content))
+		fmt.Println(err)
+		log.Errorf("Unmarshal opcache status error: pool[%v]: %v", p.Address, string(content))
 		return error(err)
 	}
+	p.Scripts = nil
 
 	p.GetPoolName()
 
